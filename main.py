@@ -36,9 +36,17 @@ async def echo(message: types.Message):
     username = message.from_user.username
     telegram_id = message.from_user.id
     phone_number = message.contact['phone_number']
-    insert_users(username, telegram_id, phone_number)
-    await message.answer("Siz ro'yxatdan o'tdingiz!")
-    await message.answer("Marhamat menu: ", reply_markup=main_menu)
+    user = select_users(telegram_id)
+    if user is None:
+        insert_users(username, telegram_id, phone_number)
+        await message.answer("Siz ro'yxatdan o'tdingiz!")
+        await message.answer("Marhamat menu: ", reply_markup=main_menu)
+    else:
+        await message.reply("888")    
+
+
+
+
 
 
 
