@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher, executor, types
 from config import API_TOKEN
 from sqlite_functions import *
 from buttons import *
+from aiogram.dispatcher.filters import Text
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -16,7 +17,6 @@ dp = Dispatcher(bot)
 # create baza
 create_db()
 create_table_users()
-
 create_table_category()
 create_table_books()
 
@@ -45,12 +45,32 @@ async def echo(message: types.Message):
         await message.reply("888")    
 
 
+# photo_handler
+@dp.message_handler(content_types='photo')
+async def echo(message: types.Message):
+    print(
+        message.photo[-1]['file_id']
+    )
 
+# Main menu!
+@dp.message_handler(text='Main menu!')
+async def echo(message: types.Message):
+    info = select_category_button()
+    await message.answer("Bo'limlardan  birini tanglang...", reply_markup=info)
 
+@dp.callback_query_handler(Text(startswith='category_'))
+async def echo(call: types.CallbackQuery):
+    index = call.data.index("_")
+    category_id = call.data[index+1:]
+    info_1 = select_books_categor_id_button(category_id)
+    await call.message.answer("Kitoblardan  birini tanglang...", reply_markup=info_1)
 
-
-
-
-
+@dp.callback_query_handler(Text(startswith='books_'))
+async def echo(call: types.CallbackQuery):
+    index = call.data.index("_")
+    id = call.data[index+1:]
+    info_2 = select_book_by_id(id)
+    await bot.send_photo(chat_id=call.from_user.id, photo=info_2[4], caption=f"Kitob nomi:  {info_2[2]}\n\n{info_2[3]}") 
+    
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)

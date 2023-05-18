@@ -50,3 +50,29 @@ def create_table_books():
                     book_photo text \
                     )"
                     )
+
+
+
+########################
+
+def select_category():
+    conn = sqlite3.connect("baza.db")
+    cursor = conn.cursor()
+    cursor.execute("select * from Book_categories")
+    return cursor.fetchall()
+
+
+def select_by_category_id(category_id):
+    conn = sqlite3.connect("baza.db")
+    cursor = conn.cursor()
+    cursor.execute("select * from Books where category_id={}".format(category_id))    
+    return cursor.fetchall()
+
+
+def select_book_by_id(id):
+    conn = sqlite3.connect("baza.db")
+    cursor = conn.cursor()
+    cursor.execute("select * from Books where id={}".format(id))    
+    return cursor.fetchone()
+
+
