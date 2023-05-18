@@ -12,9 +12,7 @@ def create_table_users():
     cursor.execute("create table if not exists Users (\
                     username varchar(150), \
                     telegram_id int, \
-                    phone_number varchar(20) \
-                    )"
-                    )
+                    phone_number varchar(20) )")
 
 
 def insert_users(username, telegram_id, phone_number):
@@ -35,9 +33,7 @@ def create_table_category():
     cursor = conn.cursor()
     cursor.execute("create table if not exists Book_categories ( \
                     category_id INTEGER PRIMARY KEY autoincrement, \
-                    category_name varchar(50) \
-                    )"
-                    )
+                    category_name varchar(50))")
 
 def create_table_books():
     conn = sqlite3.connect("baza.db")
@@ -47,13 +43,8 @@ def create_table_books():
                     category_id int, \
                     book_name varchar(50), \
                     book_description text, \
-                    book_photo text \
-                    )"
-                    )
+                    book_photo text )")
 
-
-
-########################
 
 def select_category():
     conn = sqlite3.connect("baza.db")
